@@ -26,18 +26,18 @@ public class CreditCardAssessorService {
 
     public CreditCard calcularDV(String cc) throws Exception {
         if (!StringUtil.isNumeric(cc)) {
-            throw new Exception("Um cartão deve conter apenas números");
+            throw new Exception("Um cart\u00e3o deve conter apenas n\u00fameros");
         }
         Bandeira bandeira = Bandeira.getBandeira(cc).orElse(Bandeira.GENERICA);
         if (cc.length() > bandeira.digits.stream().max(Integer::compareTo).get()) {
-            throw new Exception(String.format("%s não pode ter mais que %d dígitos", bandeira.toString(), bandeira.digits.stream().max(Integer::compareTo).get()));
+            throw new Exception(String.format("%s n\u00e3o pode ter mais que %d d\u00edgitos", bandeira.toString(), bandeira.digits.stream().max(Integer::compareTo).get()));
         }
         if (bandeira.digits.stream().anyMatch(d -> d == cc.length()) && isValido(cc)) {
             return toPojo(bandeira,cc);
         }
         int mindig = bandeira.digits.stream().filter(d -> d > cc.length()).min(Integer::compareTo)
                 .orElseThrow(() ->
-                new Exception("Dígito verificador inválido")) -1;
+                new Exception("D\u00edgito verificador inv\u00e1lido")) -1;
         String filled = StringUtil.rightPad(cc, mindig, ZERO);
         for (int i = 0; i <= 9; i++ ) {
             String tocheck = String.format("%s%d", filled,i);
@@ -45,7 +45,7 @@ public class CreditCardAssessorService {
                 return toPojo(bandeira, tocheck);
             }
         }
-        throw new Exception("Cartão impossível de ser gerado");
+        throw new Exception("Cart\u00e3o imposs\u00edvel de ser gerado");
     }
 
     private boolean isValido(String cc)
