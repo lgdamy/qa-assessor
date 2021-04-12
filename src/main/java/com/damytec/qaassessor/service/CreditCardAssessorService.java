@@ -28,7 +28,7 @@ public class CreditCardAssessorService {
         if (!StringUtil.isNumeric(cc)) {
             throw new Exception("Um cartão deve conter apenas números");
         }
-        Bandeira bandeira = Bandeira.getBandeira(cc).orElse(Bandeira.INVALIDA);
+        Bandeira bandeira = Bandeira.getBandeira(cc).orElse(Bandeira.GENERICA);
         if (cc.length() > bandeira.digits.stream().max(Integer::compareTo).get()) {
             throw new Exception(String.format("%s não pode ter mais que %d dígitos", bandeira.toString(), bandeira.digits.stream().max(Integer::compareTo).get()));
         }
@@ -90,7 +90,7 @@ public class CreditCardAssessorService {
         AURA(new Integer[]{50}, new Integer[]{16}),
         JCB(new Integer[]{35}, new Integer[]{16}),
         HIPERCARD(new Integer[]{38,60}, new Integer[]{13,16,19}),
-        INVALIDA(new Integer[]{}, new Integer[]{13,14,15,16,17,18,19});
+        GENERICA(new Integer[]{}, new Integer[]{13,14,15,16,17,18,19});
 
         Bandeira(Integer[] identifiers, Integer[] digits) {
             this.digits = Arrays.asList(digits);

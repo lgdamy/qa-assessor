@@ -65,7 +65,7 @@ public class BaseWindow extends JFrame {
             }
         };
         basePanel.setLayout(new BorderLayout(0, 0));
-        headerPanel = new GradientPanel(new Color(0xF9F26A), new Color(0xA5AC3D));
+        headerPanel = new GradientPanel(new Color(0x00F9E3), new Color(0x00AAAC));
         headerPanel.setLayout(new BorderLayout(0, 0));
         headerPanel.setBackground(new Color(-4276546));
         basePanel.add(headerPanel, BorderLayout.NORTH);
