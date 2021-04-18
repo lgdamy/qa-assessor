@@ -10,4 +10,5 @@ Está com o plugin do launch4j no maven para gerar um artefato executável
 ![CPF](../assets/Screenshot2.png?raw=true)
 
 * Releases
+  * 1.0.1 - Correção no filtro das bandeiras de cartão de crédito, Hint de bandeiras
   * 1.0.0 - Versão inicial, gerador de CPF e Cartão de Crédito
