@@ -6,23 +6,21 @@ import java.net.URI;
 /**
  * @author lgdamy on 22/01/2021
  */
-public class GithubService {
+public class WeblocationService {
 
-    private static final URI URL = URI.create("https://github.com/lgdamy/");
+    private static WeblocationService INSTANCE;
 
-    private static GithubService INSTANCE;
+    private WeblocationService() {}
 
-    private GithubService() {}
-
-    public static GithubService getInstance() {
-        return INSTANCE = INSTANCE == null ? new GithubService() : INSTANCE;
+    public static WeblocationService getInstance() {
+        return INSTANCE = INSTANCE == null ? new WeblocationService() : INSTANCE;
     }
 
-    public void openGithub() {
+    public void openWebPage(URI uri) {
         Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
         if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
             try {
-                desktop.browse(URL);
+                desktop.browse(uri);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -4,25 +4,31 @@ import com.damytec.qaassessor.pojo.Cpf;
 import com.damytec.qaassessor.pojo.CreditCard;
 import com.damytec.qaassessor.service.CPFAssessorService;
 import com.damytec.qaassessor.service.CreditCardAssessorService;
+import com.damytec.qaassessor.service.WeblocationService;
 import com.damytec.qaassessor.ui.BaseWindow;
+import com.damytec.qaassessor.ui.CustomButton;
 import com.damytec.qaassessor.util.SimpleDocumentListener;
 
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * @author lgdamy on 25/01/2021
  */
 public class QaassessorPanel implements BaseWindow.ContentForm {
-    private JTextField numberField;
-    private JButton gerarButton;
     private JPanel root;
     private JTextField inputCpf;
     private JTextField dvCpfField;
     private JTextField formattedCpfField;
     private JTextField rawCpfField;
     private JLabel validCpfLabel;
-    private JTabbedPane tabbedPane1;
     private JTextField inputCc;
     private JTextField dvCcField;
     private JTextField formattedCcField;
@@ -30,17 +36,32 @@ public class QaassessorPanel implements BaseWindow.ContentForm {
     private JLabel validCcLabel;
     private JLabel ccErrorLabel;
     private JTextField bandeiraCcField;
-    private JRadioButton imparRadio;
-    private JRadioButton parRadio;
-    private JRadioButton primeRadio;
+    private CustomButton helpBandeiraCCButton;
+    private JPanel ccCardPanel;
+    private JTextPane ccHintText;
+    private JTabbedPane tabbedPane;
 
     private ImageIcon ok;
     private ImageIcon nok;
+
+    private static final URI LUHN_ALGORITHM = URI.create("https://en.wikipedia.org/wiki/Luhn_algorithm");
 
     public QaassessorPanel() {
         this.buildImages();
         inputCpf.getDocument().addDocumentListener(inputCpfListener());
         inputCc.getDocument().addDocumentListener(inputCcListener());
+        ccHintText.setText(CreditCardAssessorService.BANDEIRA_HINT);
+        ccHintText.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ((CardLayout)ccCardPanel.getLayout()).show(ccCardPanel, "CCMain");
+            }
+        });
+        ccHintText.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                WeblocationService.getInstance().openWebPage(LUHN_ALGORITHM);
+            }
+        });
     }
 
     private SimpleDocumentListener inputCpfListener() {
@@ -83,6 +104,15 @@ public class QaassessorPanel implements BaseWindow.ContentForm {
     private void buildImages() {
         this.ok = new ImageIcon(QaassessorPanel.class.getClassLoader().getResource("images/ok.gif"));
         this.nok = new ImageIcon(QaassessorPanel.class.getClassLoader().getResource("images/nok.png"));
+    }
+
+    public void createUIComponents() {
+        helpBandeiraCCButton = new CustomButton("images/help.gif", new Dimension(20,20)) {
+            @Override
+            public void actionPerformed() {
+                ((CardLayout)ccCardPanel.getLayout()).show(ccCardPanel, "CCHint");
+            }
+        };
     }
 
     @Override

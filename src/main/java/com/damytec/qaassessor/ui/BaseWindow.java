@@ -1,9 +1,10 @@
 package com.damytec.qaassessor.ui;
 
-import com.damytec.qaassessor.service.GithubService;
+import com.damytec.qaassessor.service.WeblocationService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
 
 /**
  * @author lgdamy on 25/01/2021
@@ -15,6 +16,7 @@ public class BaseWindow extends JFrame {
     private JPanel headerPanel;
     private JPanel footerPanel;
     private ContentForm content;
+    private static final URI GITHUB_URL = URI.create("https://github.com/lgdamy/");
 
     private ImageIcon logo;
 
@@ -58,16 +60,18 @@ public class BaseWindow extends JFrame {
                 System.exit(0);
             }
         };
+        closeButton.setToolTipText("Fechar");
         logoButton = new CustomButton("images/logomini.png", new Dimension(32,32)) {
             @Override
             public void actionPerformed() {
-                GithubService.getInstance().openGithub();
+                WeblocationService.getInstance().openWebPage(GITHUB_URL);
             }
         };
+        logoButton.setToolTipText("Github");
         basePanel.setLayout(new BorderLayout(0, 0));
-        headerPanel = new GradientPanel(new Color(0x00F9E3), new Color(0x00AAAC));
+        headerPanel = new GradientPanel(new Color(0xFFD8D8CE, true), new Color(0xFFAFB5B5, true));
         headerPanel.setLayout(new BorderLayout(0, 0));
-        headerPanel.setBackground(new Color(-4276546));
+        headerPanel.setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.GRAY));
         basePanel.add(headerPanel, BorderLayout.NORTH);
         headerPanel.add(logoButton, BorderLayout.WEST);
         final JLabel label1 = new JLabel();
@@ -76,19 +80,16 @@ public class BaseWindow extends JFrame {
         label1.setHorizontalAlignment(0);
         label1.setText(content.title());
         headerPanel.add(label1, BorderLayout.CENTER);
-        final JSeparator separator = new JSeparator();
-        separator.setOrientation(0);
-        headerPanel.add(separator, BorderLayout.SOUTH);
         headerPanel.add(closeButton, BorderLayout.EAST);
         footerPanel = new JPanel();
         footerPanel.setLayout(new BorderLayout(0, 0));
         footerPanel.setBackground(new Color(-16187308));
         basePanel.add(footerPanel, BorderLayout.SOUTH);
         final JLabel label2 = new JLabel();
-        label2.setBackground(new Color(-859392));
+        label2.setBackground(Color.ORANGE);
         Font label2Font = this.createFont(null, -1, 10, label2.getFont());
         if (label2Font != null) label2.setFont(label2Font);
-        label2.setForeground(new Color(-859392));
+        label2.setForeground(Color.ORANGE);
         label2.setText("Damy Tecnologia da Informa\u00e7\u00e3o LTDA");
         footerPanel.add(label2, BorderLayout.WEST);
         final JLabel label3 = new JLabel();
